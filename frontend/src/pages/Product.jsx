@@ -4,10 +4,13 @@ import { ShopContext } from "../context/ShopContext";
 import { assets } from "../assets/assets";
 import RelatedProducts from "../components/RelatedProducts";
 
+// ✅ ADD THIS
+import { toast } from "react-toastify";
+
 const Product = () => {
 
   const { id } = useParams();
-  const { products, currency } = useContext(ShopContext);
+  const { products, currency, addToCart } = useContext(ShopContext);
 
   const [productData, setProductData] = useState(null);
   const [image, setImage] = useState("");
@@ -16,7 +19,6 @@ const Product = () => {
 
   useEffect(() => {
     const product = products.find((item) => item._id === id);
-
     if (product) {
       setProductData(product);
       setImage(product.image[0]);
@@ -26,20 +28,27 @@ const Product = () => {
   const handleAddToCart = () => {
     if (!size) {
       setError("Please select a size");
+
+      // ✅ ERROR TOAST
+      toast.error("Please select a size");
+
       return;
     }
 
     setError("");
-    alert("Item added to cart");
+
+    addToCart(productData._id, size);
+
+    // ✅ SUCCESS TOAST (alert remove)
+    toast.success("Item added to cart");
   };
 
   return productData ? (
     <div className="pt-10">
 
-      {/* ================= Product Section ================= */}
       <div className="flex gap-12 sm:flex-row flex-col">
 
-        {/* Product Images */}
+        {/* Images */}
         <div className="flex-1 flex flex-col-reverse gap-3 sm:flex-row">
 
           <div className="flex sm:flex-col gap-3 overflow-x-auto sm:overflow-y-scroll sm:w-[20%] w-full">
@@ -60,7 +69,7 @@ const Product = () => {
 
         </div>
 
-        {/* Product Info */}
+        {/* Info */}
         <div className="flex-1">
 
           <h1 className="font-medium text-2xl mt-2">
@@ -84,11 +93,13 @@ const Product = () => {
             {productData.description}
           </p>
 
-          {/* Size Selection */}
+          {/* Size */}
           <div className="flex flex-col gap-4 my-8">
+
             <p className="font-medium">Select Size</p>
 
             <div className="flex gap-2">
+
               {productData.sizes.map((item, index) => (
                 <button
                   onClick={() => setSize(item)}
@@ -102,14 +113,16 @@ const Product = () => {
                   {item}
                 </button>
               ))}
+
             </div>
 
             {error && (
               <p className="text-red-500 text-sm">{error}</p>
             )}
+
           </div>
 
-          {/* Add to Cart */}
+          {/* Button */}
           <button
             onClick={handleAddToCart}
             className="bg-black text-white px-8 py-3 text-sm active:bg-gray-700"
@@ -117,39 +130,9 @@ const Product = () => {
             ADD TO CART
           </button>
 
-          <hr className="mt-8 sm:w-4/5" />
-
-          <div className="text-sm text-gray-500 mt-5 flex flex-col gap-1">
-            <p>100% Original product.</p>
-            <p>Cash on delivery is available on this product.</p>
-            <p>Easy return and exchange policy within 7 days.</p>
-          </div>
-
-        </div>
-      </div>
-
-      {/* ================= Description & Review Section ================= */}
-
-      <div className="mt-20">
-
-        <div className="flex">
-          <b className="border px-5 py-3 text-sm">Description</b>
-          <p className="border px-5 py-3 text-sm">Reviews (122)</p>
-        </div>
-
-        <div className="flex flex-col gap-4 border px-6 py-6 text-sm text-gray-500">
-          <p>
-            An e-commerce website is an online platform that facilitates the buying and selling of products.
-          </p>
-          <p>
-            E-commerce websites typically display products or services along with detailed descriptions,
-            prices, images and allow customers to purchase them online.
-          </p>
         </div>
 
       </div>
-
-      {/* ================= Related Products ================= */}
 
       <RelatedProducts
         category={productData.category}
@@ -160,7 +143,7 @@ const Product = () => {
   ) : (
     <div className="opacity-0"></div>
   );
+
 };
 
 export default Product;
-      

@@ -5,7 +5,6 @@ import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import SearchBar from "./components/SearchBar";
 
-
 import Home from "./pages/Home";
 import Collection from "./pages/Collection";
 import About from "./pages/About";
@@ -16,13 +15,14 @@ import Product from "./pages/Product";
 import PlaceOrder from "./pages/PlaceOrder";
 import Orders from "./pages/Orders";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   return (
     <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
       <Navbar />
       <SearchBar/>
-
 
       <Routes>
         <Route path="/" element={<Home />} />
@@ -35,7 +35,11 @@ const App = () => {
         <Route path="/place-order" element={<PlaceOrder />} />
         <Route path="/orders" element={<Orders />} />
       </Routes>
+
       <Footer/>
+
+      {/* Toast Notification */}
+      <ToastContainer position="top-right" autoClose={2000} />
       
     </div>
   );
