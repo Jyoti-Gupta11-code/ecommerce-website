@@ -1,14 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
 import Title from "../components/Title";
+import CartTotal from "../components/CartTotal";
 import { assets } from "../assets/assets";
 
 const Cart = () => {
 
-  const { products, currency, cartItems, updateQuantity } = useContext(ShopContext);
+  const { products, currency, cartItems, updateQuantity, navigate } = useContext(ShopContext);
 
   const [cartData, setCartData] = useState([]);
 
+  // Convert cartItems object into array
   useEffect(() => {
 
     const tempData = [];
@@ -34,17 +36,26 @@ const Cart = () => {
   return (
     <div className="border-t pt-14">
 
+      {/* Page Title */}
       <div className="text-2xl mb-3">
         <Title text1={"YOUR"} text2={"CART"} />
       </div>
 
+      {/* Cart Items */}
       <div>
+
+        {cartData.length === 0 && (
+          <p className="text-gray-500">Your cart is empty.</p>
+        )}
 
         {cartData.map((item, index) => {
 
           const productData = products.find(
-            (product) => product._id === item._id
+            (product) => product._id.toString() === item._id.toString()
           );
+
+          // Safety check
+          if (!productData) return null;
 
           return (
             <div
@@ -57,8 +68,8 @@ const Cart = () => {
 
                 <img
                   className="w-16 sm:w-20"
-                  src={productData.image[0]}
-                  alt=""
+                  src={productData?.image?.[0]}
+                  alt={productData.name}
                 />
 
                 <div>
@@ -94,7 +105,7 @@ const Cart = () => {
                 />
               </div>
 
-              {/* Delete Icon */}
+              {/* Delete Button */}
               <div className="flex items-center justify-end">
                 <img
                   onClick={() => updateQuantity(item._id, item.size, 0)}
@@ -108,6 +119,23 @@ const Cart = () => {
           );
         })}
 
+      </div>
+
+      {/* Cart Total Section */}
+      <div className="flex justify-end my-20">
+        <div className="w-full sm:w-[410px]">
+          <CartTotal />
+
+          <div className="w-full text-end">
+            <button
+              onClick={() => navigate("/place-order")}
+              className="bg-black text-white text-sm my-8 px-8 py-3"
+            >
+              PROCEED TO CHECKOUT
+            </button>
+          </div>
+
+        </div>
       </div>
 
     </div>
