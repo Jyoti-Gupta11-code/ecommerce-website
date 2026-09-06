@@ -1,16 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { products } from "../assets/assets";
+import React, { useState, useEffect, useContext } from "react";
+import { ShopContext } from "../context/ShopContext";
 import ProductItem from "./ProductItem";
 import Title from "./Title";
 
 const Bestseller = () => {
 
+  const { products } = useContext(ShopContext);
   const [bestSeller, setBestSeller] = useState([]);
 
   useEffect(() => {
-    const bestProduct = products.filter((item) => item.bestseller === true);
-    setBestSeller(bestProduct.slice(0, 5));
-  }, []);
+    if (products && products.length > 0) {
+      const bestProduct = products.filter((item) => item.bestseller === true);
+      setBestSeller(bestProduct.slice(0, 10));
+    }
+  }, [products]);
 
   return (
     <div className="my-10">
@@ -19,8 +22,7 @@ const Bestseller = () => {
       <div className="text-center text-3xl py-8">
         <Title text1={"BEST"} text2={"SELLER"} />
         <p className="w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-600">
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+          Shop the styles our customers love most, from everyday essentials to standout pieces.
         </p>
       </div>
 

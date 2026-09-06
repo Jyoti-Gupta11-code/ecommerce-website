@@ -1,5 +1,5 @@
 import React from "react";
-import assets from "../assets/assets"; // make sure your assets path is correct
+import { assets } from "../assets/assets";
 
 const OurPolicy = () => {
   return (

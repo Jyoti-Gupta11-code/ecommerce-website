@@ -1,23 +1,79 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
 import Title from "../components/Title";
+import axios from "axios";
 
 const Orders = () => {
 
-  const { products, currency } = useContext(ShopContext);
+  const { backendUrl, token, currency } = useContext(ShopContext);
+  const [orderData, setOrderData] = useState([]);
+
+  // 📦 Load Orders from Backend
+  const loadOrderData = async () => {
+    try {
+
+      if (!token) {
+        return null;
+      }
+
+      const response = await axios.post(
+        backendUrl + "/api/order/userorders",
+        {},
+        { headers: { token } }
+      );
+
+      if (response.data.success) {
+
+        let allOrdersItem = [];
+
+        response.data.orders.map((order) => {
+          order.items.map((item) => {
+
+            item["status"] = order.status;
+            item["payment"] = order.payment;
+            item["paymentMethod"] = order.paymentMethod;
+            item["date"] = order.date;
+
+            allOrdersItem.push(item);
+          });
+        });
+
+        setOrderData(allOrdersItem.reverse());
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    loadOrderData();
+  }, [token]);
 
   return (
     <div className="border-t pt-16">
 
       {/* Page Title */}
       <div className="text-2xl">
-        <Title text1={'MY'} text2={'ORDERS'} />
+        <Title text1={"MY"} text2={"ORDERS"} />
       </div>
 
       {/* Orders List */}
       <div>
-        {
-          products.slice(1, 4).map((item, index) => (
+        {orderData.length === 0 ? (
+          <div className="text-center py-20">
+            <p className="text-xl font-medium text-gray-700 mb-2">No orders yet</p>
+            <p className="text-sm text-gray-500 mb-6">When you place an order, it will appear here.</p>
+            <Link
+              to="/collection"
+              className="inline-block bg-black text-white text-xs sm:text-sm px-8 py-3 hover:bg-gray-800 transition-colors uppercase tracking-wider"
+            >
+              Start Shopping
+            </Link>
+          </div>
+        ) : (
+          orderData.map((item, index) => (
             <div
               key={index}
               className="py-4 border-t border-b text-gray-700 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
@@ -40,12 +96,22 @@ const Orders = () => {
                     <p className="text-lg">
                       {currency}{item.price}
                     </p>
-                    <p>Quantity: 1</p>
-                    <p>Size: M</p>
+                    <p>Quantity: {item.quantity}</p>
+                    <p>Size: {item.size}</p>
                   </div>
 
                   <p className="mt-2">
-                    Date: <span className="text-gray-400">25, July, 2024</span>
+                    Date:{" "}
+                    <span className="text-gray-400">
+                      {new Date(item.date).toDateString()}
+                    </span>
+                  </p>
+
+                    <p className="mt-2">
+                    Payment :{" "}
+                    <span className="text-gray-400">
+                      {item.paymentMethod}
+                    </span>
                   </p>
                 </div>
               </div>
@@ -55,18 +121,18 @@ const Orders = () => {
                 <div className="flex items-center gap-2">
                   <p className="min-w-2 h-2 rounded-full bg-green-500"></p>
                   <p className="text-sm md:text-base">
-                    Ready to ship
+                    {item.status}
                   </p>
                 </div>
 
-                <button className="border px-4 py-2 text-sm font-medium rounded-sm">
+                <button  onClick ={loadOrderData} className="border px-4 py-2 text-sm font-medium rounded-sm">
                   Track Order
                 </button>
               </div>
 
             </div>
           ))
-        }
+        )}
       </div>
 
     </div>

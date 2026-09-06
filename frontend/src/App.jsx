@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import SearchBar from "./components/SearchBar";
+import VoiceAssistant from "./components/VoiceAssistant";
 
 import Home from "./pages/Home";
 import Collection from "./pages/Collection";
@@ -33,10 +34,15 @@ const App = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="/product/:id" element={<Product />} />
         <Route path="/place-order" element={<PlaceOrder />} />
-        <Route path="/orders" element={<Orders />} />
+        <Route path="/orders" element={<Orders />}
+         />
+                 <Route path="/verify" element={<verify />} />
       </Routes>
 
       <Footer/>
+      
+      {/* AI Voice Assistant Widget */}
+      <VoiceAssistant />
 
       {/* Toast Notification */}
       <ToastContainer position="top-right" autoClose={2000} />

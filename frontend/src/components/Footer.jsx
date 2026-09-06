@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -15,10 +16,9 @@ const Footer = () => {
               FOREVER<span className="text-pink-500">.</span>
             </h1>
             <p className="text-gray-600 text-sm leading-6">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book.
+              Forever is your destination for timeless fashion and contemporary style.
+              We craft premium-quality apparel designed for everyday comfort, confidence,
+              and modern living.
             </p>
           </div>
 
@@ -26,10 +26,10 @@ const Footer = () => {
           <div>
             <p className="text-lg font-semibold mb-5">COMPANY</p>
             <ul className="flex flex-col gap-2 text-gray-600 text-sm">
-              <li className="hover:text-black cursor-pointer">Home</li>
-              <li className="hover:text-black cursor-pointer">About us</li>
-              <li className="hover:text-black cursor-pointer">Delivery</li>
-              <li className="hover:text-black cursor-pointer">Privacy policy</li>
+              <li><Link to="/" className="hover:text-black">Home</Link></li>
+              <li><Link to="/about" className="hover:text-black">About us</Link></li>
+              <li><Link to="/collection" className="hover:text-black">Delivery</Link></li>
+              <li><Link to="/about" className="hover:text-black">Privacy policy</Link></li>
             </ul>
           </div>
 
@@ -48,7 +48,7 @@ const Footer = () => {
         <div className="mt-10">
           <hr />
           <p className="py-5 text-sm text-center text-gray-500">
-            Copyright 2024 © forever.com - All Rights Reserved.
+            Copyright 2026 © forever.com - All Rights Reserved.
           </p>
         </div>
 

@@ -12,8 +12,8 @@ const Cart = () => {
 
   // Convert cartItems object into array
   useEffect(() => {
-
-    const tempData = [];
+    if (products.length > 0){
+          const tempData = [];
 
     for (const items in cartItems) {
       for (const item in cartItems[items]) {
@@ -31,7 +31,11 @@ const Cart = () => {
 
     setCartData(tempData);
 
-  }, [cartItems]);
+    }
+
+
+
+  }, [cartItems,products]);
 
   return (
     <div className="border-t pt-14">
@@ -42,101 +46,110 @@ const Cart = () => {
       </div>
 
       {/* Cart Items */}
-      <div>
+      {cartData.length === 0 ? (
+        <div className="text-center py-20">
+          <p className="text-xl font-medium text-gray-700 mb-2">Your cart is empty</p>
+          <p className="text-sm text-gray-500 mb-6">Looks like you haven't added any items to your cart yet.</p>
+          <button
+            onClick={() => navigate("/collection")}
+            className="bg-black text-white text-xs sm:text-sm px-8 py-3 hover:bg-gray-800 transition-colors uppercase tracking-wider"
+          >
+            Explore Collection
+          </button>
+        </div>
+      ) : (
+        <>
+          <div>
+            {cartData.map((item, index) => {
 
-        {cartData.length === 0 && (
-          <p className="text-gray-500">Your cart is empty.</p>
-        )}
+              const productData = products.find(
+                (product) => product._id.toString() === item._id.toString()
+              );
 
-        {cartData.map((item, index) => {
+              // Safety check
+              if (!productData) return null;
 
-          const productData = products.find(
-            (product) => product._id.toString() === item._id.toString()
-          );
+              return (
+                <div
+                  key={index}
+                  className="py-4 border-t border-b text-gray-700 grid grid-cols-[4fr_1fr_1fr]"
+                >
 
-          // Safety check
-          if (!productData) return null;
+                  {/* Product Info */}
+                  <div className="flex items-start gap-6">
 
-          return (
-            <div
-              key={index}
-              className="py-4 border-t border-b text-gray-700 grid grid-cols-[4fr_1fr_1fr]"
-            >
+                    <img
+                      className="w-16 sm:w-20"
+                      src={productData?.image?.[0]}
+                      alt={productData.name}
+                    />
 
-              {/* Product Info */}
-              <div className="flex items-start gap-6">
+                    <div>
+                      <p className="text-xs sm:text-lg font-medium">
+                        {productData.name}
+                      </p>
 
-                <img
-                  className="w-16 sm:w-20"
-                  src={productData?.image?.[0]}
-                  alt={productData.name}
-                />
+                      <div className="flex items-center gap-5 mt-2">
+                        <p>{currency}{productData.price}</p>
 
-                <div>
-                  <p className="text-xs sm:text-lg font-medium">
-                    {productData.name}
-                  </p>
+                        <p className="px-2 sm:px-3 sm:py-1 border bg-slate-50">
+                          {item.size}
+                        </p>
+                      </div>
+                    </div>
 
-                  <div className="flex items-center gap-5 mt-2">
-                    <p>{currency}{productData.price}</p>
-
-                    <p className="px-2 sm:px-3 sm:py-1 border bg-slate-50">
-                      {item.size}
-                    </p>
                   </div>
+
+                  {/* Quantity Input */}
+                  <div className="flex items-center">
+                    <input
+                      className="border max-w-10 sm:max-w-20 px-1 sm:px-2 py-1"
+                      type="number"
+                      min={1}
+                      value={item.quantity}
+                      onChange={(e) => {
+                        const value = e.target.value;
+
+                        if (value === "" || Number(value) <= 0) return;
+
+                        updateQuantity(item._id, item.size, Number(value));
+                      }}
+                    />
+                  </div>
+
+                  {/* Delete Button */}
+                  <div className="flex items-center justify-end">
+                    <img
+                      onClick={() => updateQuantity(item._id, item.size, 0)}
+                      className="w-4 mr-4 sm:w-5 cursor-pointer"
+                      src={assets.bin_icon}
+                      alt="delete"
+                    />
+                  </div>
+
                 </div>
+              );
+            })}
+          </div>
 
-              </div>
+          {/* Cart Total Section */}
+          <div className="flex justify-end my-20">
+            <div className="w-full sm:w-[410px]">
+              <CartTotal />
 
-              {/* Quantity Input */}
-              <div className="flex items-center">
-                <input
-                  className="border max-w-10 sm:max-w-20 px-1 sm:px-2 py-1"
-                  type="number"
-                  min={1}
-                  value={item.quantity}
-                  onChange={(e) => {
-                    const value = e.target.value;
-
-                    if (value === "" || Number(value) <= 0) return;
-
-                    updateQuantity(item._id, item.size, Number(value));
-                  }}
-                />
-              </div>
-
-              {/* Delete Button */}
-              <div className="flex items-center justify-end">
-                <img
-                  onClick={() => updateQuantity(item._id, item.size, 0)}
-                  className="w-4 mr-4 sm:w-5 cursor-pointer"
-                  src={assets.bin_icon}
-                  alt="delete"
-                />
+              <div className="w-full text-end">
+                <button
+                  onClick={() => navigate("/place-order")}
+                  className="bg-black text-white text-sm my-8 px-8 py-3"
+                >
+                  PROCEED TO CHECKOUT
+                </button>
               </div>
 
             </div>
-          );
-        })}
-
-      </div>
-
-      {/* Cart Total Section */}
-      <div className="flex justify-end my-20">
-        <div className="w-full sm:w-[410px]">
-          <CartTotal />
-
-          <div className="w-full text-end">
-            <button
-              onClick={() => navigate("/place-order")}
-              className="bg-black text-white text-sm my-8 px-8 py-3"
-            >
-              PROCEED TO CHECKOUT
-            </button>
           </div>
-
-        </div>
-      </div>
+        </>
+      )}
 
     </div>
   );
