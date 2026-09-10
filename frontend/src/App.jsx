@@ -15,6 +15,7 @@ import Cart from "./pages/Cart";
 import Product from "./pages/Product";
 import PlaceOrder from "./pages/PlaceOrder";
 import Orders from "./pages/Orders";
+import Verify from "./pages/verify";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -34,9 +35,8 @@ const App = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="/product/:id" element={<Product />} />
         <Route path="/place-order" element={<PlaceOrder />} />
-        <Route path="/orders" element={<Orders />}
-         />
-                 <Route path="/verify" element={<verify />} />
+        <Route path="/orders" element={<Orders />} />
+        <Route path="/verify" element={<Verify />} />
       </Routes>
 
       <Footer/>

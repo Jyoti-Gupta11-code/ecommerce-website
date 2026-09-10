@@ -30,12 +30,14 @@ const Contact = () => {
           </p>
 
           <p className="text-gray-500">
-            54709 Willms Station <br />
-            Suite 350, Washington, USA
+            Forever Fashion Pvt. Ltd. <br />
+            A-123, Sector 62 <br />
+            Noida, Uttar Pradesh 201309 <br />
+            India
           </p>
 
           <p className="text-gray-500">
-            Tel: (415) 555-0132 <br />
+            Tel: +91 98765 43210 <br />
             Email: admin@forever.com
           </p>
 

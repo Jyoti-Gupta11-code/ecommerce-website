@@ -26,10 +26,10 @@ const Footer = () => {
           <div>
             <p className="text-lg font-semibold mb-5">COMPANY</p>
             <ul className="flex flex-col gap-2 text-gray-600 text-sm">
-              <li><Link to="/" className="hover:text-black">Home</Link></li>
-              <li><Link to="/about" className="hover:text-black">About us</Link></li>
-              <li><Link to="/collection" className="hover:text-black">Delivery</Link></li>
-              <li><Link to="/about" className="hover:text-black">Privacy policy</Link></li>
+              <li><Link to="/" onClick={() => window.scrollTo(0,0)} className="hover:text-black">Home</Link></li>
+              <li><Link to="/collection" onClick={() => window.scrollTo(0,0)} className="hover:text-black">Collection</Link></li>
+              <li><Link to="/about" onClick={() => window.scrollTo(0,0)} className="hover:text-black">About us</Link></li>
+              <li><Link to="/contact" onClick={() => window.scrollTo(0,0)} className="hover:text-black">Contact</Link></li>
             </ul>
           </div>
 
