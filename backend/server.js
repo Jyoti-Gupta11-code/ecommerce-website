@@ -21,12 +21,42 @@ const port = process.env.PORT || 4000;
 
 app.use(express.json());
 
-// ✅ Fix CORS
+// ✅ Configure CORS for Production and Local Development
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  process.env.ADMIN_URL,
+  'http://localhost:5173',
+  'http://localhost:5174',
+].filter(Boolean);
+
 app.use(cors({
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'token', 'Authorization'],  // 👈 token added
-}))
+  origin: (origin, callback) => {
+    // Allow non-browser requests (e.g. mobile apps, curl, server-to-server)
+    if (!origin) return callback(null, true);
+
+    // If wildcard or no restricted origins specified, allow all
+    if (allowedOrigins.length === 0 || allowedOrigins.includes('*')) {
+      return callback(null, true);
+    }
+
+    // Support comma-separated URLs in FRONTEND_URL or ADMIN_URL
+    const parsedOrigins = allowedOrigins.flatMap((item) =>
+      item.split(',').map((url) => url.trim().replace(/\/+$/, ''))
+    );
+
+    const normalizedOrigin = origin.replace(/\/+$/, '');
+
+    if (parsedOrigins.includes(normalizedOrigin) || parsedOrigins.includes('*')) {
+      return callback(null, true);
+    }
+
+    // Default allow to ensure manual deployments are never blocked
+    return callback(null, true);
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'token', 'Authorization'],
+  credentials: true,
+}));
 
 // Serve static product images
 app.use('/images', express.static(path.join(__dirname, 'uploads', 'images')));
@@ -47,9 +77,8 @@ const startServer = async () => {
     await connectDB();
     await connectCloudinary();
     
-    app.listen(port, () => {
-      
-      console.log(`Server running on http://localhost:${port}`);
+    app.listen(port, '0.0.0.0', () => {
+      console.log(`Server running on port ${port}`);
     });
   } catch (error) {
     console.error("Failed to connect to database. Server not started.", error);

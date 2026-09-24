@@ -9,8 +9,9 @@ import Orders from './pages/Orders'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-// backend URL from .env
-export const backendUrl = import.meta.env.VITE_BACKEND_URL
+// backend URL from environment variables
+const rawBackendUrl = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_API_URL || '';
+export const backendUrl = rawBackendUrl.replace(/\/+$/, '');
 export const currency = '₹'
 
 const App = () => {
