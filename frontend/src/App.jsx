@@ -9,7 +9,7 @@ import VoiceAssistant from "./components/VoiceAssistant";
 import Home from "./pages/Home";
 import Collection from "./pages/Collection";
 import About from "./pages/About";
-import Contact from "./pages/Contact";
+import Contact from "./pages/contact";
 import Login from "./pages/Login";
 import Cart from "./pages/Cart";
 import Product from "./pages/Product";
