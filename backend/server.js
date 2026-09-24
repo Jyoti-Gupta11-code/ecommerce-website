@@ -25,6 +25,7 @@ app.use(express.json());
 const allowedOrigins = [
   process.env.FRONTEND_URL,
   process.env.ADMIN_URL,
+  'https://voluble-kitten-499017.netlify.app',
   'http://localhost:5173',
   'http://localhost:5174',
 ].filter(Boolean);

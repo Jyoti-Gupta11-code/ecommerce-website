@@ -10,7 +10,10 @@ const ShopContextProvider = (props) => {
 
   const currency = "₹";
   const delivery_fee = 50;
-  const rawBackendUrl = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_API_URL || '';
+  const rawBackendUrl =
+    import.meta.env.VITE_BACKEND_URL ||
+    import.meta.env.VITE_API_URL ||
+    'https://ecommerce-website-nvw6.onrender.com';
   const backendUrl = rawBackendUrl.replace(/\/+$/, '');
 
   const [search, setSearch] = useState('');
@@ -114,7 +117,8 @@ const ShopContextProvider = (props) => {
     try {
       const response = await axios.get(backendUrl + '/api/product/list');
       if (response.data.success) {
-        setProducts(response.data.data);
+        const productList = response.data.products || response.data.data || [];
+        setProducts(productList);
       } else {
         toast.error(response.data.message);
       }

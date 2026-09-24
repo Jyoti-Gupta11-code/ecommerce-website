@@ -60,7 +60,8 @@ export const listProducts = async (req, res) => {
 
     res.json({
       success: true,
-      data: products
+      data: products,
+      products: products
     });
 
   } catch (error) {

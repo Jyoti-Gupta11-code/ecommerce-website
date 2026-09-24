@@ -9,8 +9,11 @@ import Orders from './pages/Orders'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-// backend URL from environment variables
-const rawBackendUrl = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_API_URL || '';
+// backend URL from environment variables with production fallback
+const rawBackendUrl =
+  import.meta.env.VITE_BACKEND_URL ||
+  import.meta.env.VITE_API_URL ||
+  'https://ecommerce-website-nvw6.onrender.com';
 export const backendUrl = rawBackendUrl.replace(/\/+$/, '');
 export const currency = '₹'
 
