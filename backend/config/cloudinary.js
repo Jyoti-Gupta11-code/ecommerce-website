@@ -7,7 +7,7 @@ const connectCloudinary = async () => {
     api_secret: process.env.CLOUDINARY_API_SECRET,   // ✅ fix
   });
 
-  console.log("Cloudinary Connected");
+  console.log("Cloudinary Connected ");
 };
 
 export default connectCloudinary;

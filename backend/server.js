@@ -48,6 +48,7 @@ const startServer = async () => {
     await connectCloudinary();
     
     app.listen(port, () => {
+      
       console.log(`Server running on http://localhost:${port}`);
     });
   } catch (error) {
